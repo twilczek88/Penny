@@ -1,0 +1,52 @@
+.sticker {
+    background: $stickerColor;
+    min-height: 150px;
+    min-width: 150px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: $mainColor 1.5px solid;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+
+    .bar {
+        padding-top: 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 30px;
+        width: 100%;
+        background: $mainColor;
+        &:hover {
+            cursor: move;
+        }
+    }
+
+    textarea {
+        margin-top: 30px;
+        padding: 3px 10px;
+        box-sizing: border-box;
+        min-width: 150px;
+        min-height: 150px;
+        background: transparent;
+        border: none;
+    }
+
+    p {
+        margin-top: 30px;
+        padding: 3px 10px;
+        box-sizing: border-box;
+        min-width: 150px;
+        min-height: 150px;
+        background: transparent;
+        border: none;
+    }
+
+    button {
+        user-select: none;
+    }
+}
+
+.note-text {
+    font-family: sans-serif;
+    font-size: 1.5rem;
+}

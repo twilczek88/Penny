@@ -1,7 +1,7 @@
 //Konfiguracja Webpack
 const path = require("path");
 module.exports = {
-    entry: ['./js/input.jsx', './css/main.scss'],
+    entry: ['./js/input.jsx', './scss/main.scss'],
     output: {
         path: path.resolve("js"),
         filename: "output.js"
