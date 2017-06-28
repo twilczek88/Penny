@@ -6,21 +6,36 @@ export default class Sticker extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            editable: true,
-            text: ''
+            note: {
+                id: this.props.id,
+                editable: true,
+                text: ''
+            }
         };
     }
 
     handleEditClick = () => {
         this.setState({
-            editable: !this.state.editable
+            note : {
+                id : this.state.note.id,
+                editable : !this.state.note.editable,
+                text : this.state.note.text
+            }
         })
     }
 
     parseText = ( text ) => {
         this.setState({
-            text: text
+            note: {
+                id : this.state.note.id,
+                editable: this.state.note.editable,
+                text: text
+            }
         })
+    }
+
+    handleDeleteClick = () => {
+        console.log('delete click');
     }
 
     componentDidMount() {
@@ -39,7 +54,7 @@ export default class Sticker extends React.Component {
 
         onDragStart = function( e ) {
             let boundingClientRect;
-            if ( e.target.className.indexOf('bar') === -1 ) {
+            if ( e.target.className.indexOf('grab') === -1 ) {
                 return;
             }
 
@@ -84,33 +99,39 @@ export default class Sticker extends React.Component {
     }
 
     render() {
-        const header = <div className='bar'>
-
+        const header = <div className='grab' >
         </div>;
 
         const footer = <div>
 
         </div>;
 
-        if( this.state.editable ){
+        if( this.state.note.editable ){
             return <div className='sticker'>
                 { header }
                 <Text
-                    editable = { this.state.editable }
+                    editable = { this.state.note.editable }
                     parseText = { this.parseText }
                 />
-                <button onClick = { this.handleEditClick }>
-                    post!
-                </button>
+                <div
+                    className = 'button'
+                    onClick = { this.handleEditClick }>
+                        post!
+                </div>
                 { footer }
             </div>
         } else {
             return <div className='sticker'>
                 { header }
                 <Text
-                    editable = { this.state.editable }
-                    text = { this.state.text }
+                    editable = { this.state.note.editable }
+                    text = { this.state.note.text }
                 />
+                <div
+                    className = 'button'
+                    onClick = { this.handleDeleteClick }>
+                        remove
+                </div>
                 { footer }
             </div>
         }

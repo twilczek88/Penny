@@ -2,6 +2,11 @@
 sticky-note project in ReactJS
 
 ## Technologies used:
+* ReactJS
+* JS (ES6)
+* Webpack
+* SASS
+
 
 ## To do:
 * basic implementation:
@@ -14,4 +19,5 @@ sticky-note project in ReactJS
 * then:
 - [x] add basic styles to the page
 - [ ] add checklist option to sticky-sticky note
-- [ ] think of something clever
+- [ ] integrate the entire thing with online JSON database
+- [ ] Add some awesome icons and stuff

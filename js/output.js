@@ -9794,6 +9794,25 @@ var App = function (_React$Component) {
     }
 
     _createClass(App, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+
+            // console.log('App zostanie zamontowany');
+
+            var config = {
+                apiKey: "AIzaSyC5ckiCce9nQQfF2z5WL3QKeSkEMG0Q6vk",
+                databaseURL: "https://penny-fec88.firebaseio.com"
+            };
+            var app = firebase.initializeApp(config);
+
+            var test = app.database().ref('halo');
+            test.on('value', function (data) {
+                // console.log(data.val());
+            }, function (error) {
+                console.error('error: ' + error.code);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(_Layout2.default, null);
@@ -9946,17 +9965,32 @@ var Layout = function (_React$Component) {
         };
 
         _this.state = {
-            newNote: {},
             notes: []
         };
         return _this;
     }
 
     _createClass(Layout, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+
+            console.log('w will mount: ', this.state);
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log('w did mount: ', this.state);
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var notes = this.state.notes.slice().map(function (el) {
-                return _react2.default.createElement(_Sticker2.default, { note: el });
+            console.log('w render: ', this.state);
+            var notes = this.state.notes.slice().map(function (el, i) {
+                return _react2.default.createElement(_Sticker2.default, {
+                    note: el,
+                    id: i,
+                    key: i
+                });
             });
 
             return _react2.default.createElement(
@@ -10089,19 +10123,34 @@ var Sticker = function (_React$Component) {
 
         _this.handleEditClick = function () {
             _this.setState({
-                editable: !_this.state.editable
+                note: {
+                    id: _this.state.note.id,
+                    editable: !_this.state.note.editable,
+                    text: _this.state.note.text
+                }
             });
         };
 
         _this.parseText = function (text) {
             _this.setState({
-                text: text
+                note: {
+                    id: _this.state.note.id,
+                    editable: _this.state.note.editable,
+                    text: text
+                }
             });
         };
 
+        _this.handleDeleteClick = function () {
+            console.log('delete click');
+        };
+
         _this.state = {
-            editable: true,
-            text: ''
+            note: {
+                id: _this.props.id,
+                editable: true,
+                text: ''
+            }
         };
         return _this;
     }
@@ -10124,7 +10173,7 @@ var Sticker = function (_React$Component) {
 
             onDragStart = function onDragStart(e) {
                 var boundingClientRect = void 0;
-                if (e.target.className.indexOf('bar') === -1) {
+                if (e.target.className.indexOf('grab') === -1) {
                     return;
                 }
 
@@ -10170,22 +10219,24 @@ var Sticker = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var header = _react2.default.createElement('div', { className: 'bar' });
+            var header = _react2.default.createElement('div', { className: 'grab' });
 
             var footer = _react2.default.createElement('div', null);
 
-            if (this.state.editable) {
+            if (this.state.note.editable) {
                 return _react2.default.createElement(
                     'div',
                     { className: 'sticker' },
                     header,
                     _react2.default.createElement(_Text2.default, {
-                        editable: this.state.editable,
+                        editable: this.state.note.editable,
                         parseText: this.parseText
                     }),
                     _react2.default.createElement(
-                        'button',
-                        { onClick: this.handleEditClick },
+                        'div',
+                        {
+                            className: 'button',
+                            onClick: this.handleEditClick },
                         'post!'
                     ),
                     footer
@@ -10196,9 +10247,16 @@ var Sticker = function (_React$Component) {
                     { className: 'sticker' },
                     header,
                     _react2.default.createElement(_Text2.default, {
-                        editable: this.state.editable,
-                        text: this.state.text
+                        editable: this.state.note.editable,
+                        text: this.state.note.text
                     }),
+                    _react2.default.createElement(
+                        'div',
+                        {
+                            className: 'button',
+                            onClick: this.handleDeleteClick },
+                        'remove'
+                    ),
                     footer
                 );
             }
@@ -11616,7 +11674,7 @@ exports = module.exports = __webpack_require__(95)(undefined);
 
 
 // module
-exports.push([module.i, "html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font-weight: normal;\n  vertical-align: baseline;\n  background: transparent; }\n\nmain, article, aside, figure, footer, header, nav, section, details, summary {\n  display: block; }\n\nhtml {\n  box-sizing: border-box; }\n\n*,\n*:before,\n*:after {\n  box-sizing: inherit; }\n\nimg,\nobject,\nembed {\n  max-width: 100%; }\n\nhtml {\n  overflow-y: scroll; }\n\nul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before,\nblockquote:after,\nq:before,\nq:after {\n  content: '';\n  content: none; }\n\na {\n  margin: 0;\n  padding: 0;\n  font-size: 100%;\n  vertical-align: baseline;\n  background: transparent; }\n\ndel {\n  text-decoration: line-through; }\n\nabbr[title], dfn[title] {\n  border-bottom: 1px dotted #000;\n  cursor: help; }\n\ntable {\n  border-collapse: separate;\n  border-spacing: 0; }\n\nth {\n  font-weight: bold;\n  vertical-align: bottom; }\n\ntd {\n  font-weight: normal;\n  vertical-align: top; }\n\nhr {\n  display: block;\n  height: 1px;\n  border: 0;\n  border-top: 1px solid #ccc;\n  margin: 1em 0;\n  padding: 0; }\n\ninput, select {\n  vertical-align: middle; }\n\npre {\n  white-space: pre;\n  white-space: pre-wrap;\n  white-space: pre-line;\n  word-wrap: break-word; }\n\ninput[type=\"radio\"] {\n  vertical-align: text-bottom; }\n\ninput[type=\"checkbox\"] {\n  vertical-align: bottom; }\n\n.ie7 input[type=\"checkbox\"] {\n  vertical-align: baseline; }\n\n.ie6 input {\n  vertical-align: text-bottom; }\n\nselect, input, textarea {\n  font: 99% sans-serif; }\n\ntable {\n  font-size: inherit;\n  font: 100%; }\n\nsmall {\n  font-size: 85%; }\n\nstrong {\n  font-weight: bold; }\n\ntd, td img {\n  vertical-align: top; }\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative; }\n\nsup {\n  top: -0.5em; }\n\nsub {\n  bottom: -0.25em; }\n\npre, code, kbd, samp {\n  font-family: monospace, sans-serif; }\n\n.clickable,\nlabel,\ninput[type=button],\ninput[type=submit],\ninput[type=file],\nbutton {\n  cursor: pointer; }\n\nbutton, input, select, textarea {\n  margin: 0; }\n\nbutton,\ninput[type=button] {\n  width: auto;\n  overflow: visible; }\n\n.ie7 img {\n  -ms-interpolation-mode: bicubic; }\n\n.clearfix:after {\n  content: \" \";\n  display: block;\n  clear: both; }\n\nbody {\n  background-color: #add8e6; }\n\nheader h1 {\n  user-select: none; }\n  header h1:hover {\n    cursor: default; }\n\n.sticker {\n  background: #fff;\n  min-height: 150px;\n  min-width: 150px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: #00f 1.5px solid;\n  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); }\n  .sticker .bar {\n    padding-top: 30px;\n    position: absolute;\n    top: 0;\n    left: 0;\n    height: 30px;\n    width: 100%;\n    background: #00f; }\n    .sticker .bar:hover {\n      cursor: move; }\n  .sticker textarea {\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-width: 150px;\n    min-height: 150px;\n    background: transparent;\n    border: none; }\n  .sticker p {\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-width: 150px;\n    min-height: 150px;\n    background: transparent;\n    border: none; }\n  .sticker button {\n    user-select: none; }\n\n.note-text {\n  font-family: sans-serif;\n  font-size: 1.5rem; }\n\n.penny {\n  border-radius: 50%;\n  width: 50px;\n  height: 50px;\n  background-color: #008000; }\n  .penny p {\n    line-height: 50px;\n    width: 50px;\n    font-size: 2rem;\n    font-weight: bold;\n    text-align: center;\n    vertical-align: middle;\n    user-select: none; }\n    .penny p:hover {\n      cursor: pointer; }\n", ""]);
+exports.push([module.i, "html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font-weight: normal;\n  vertical-align: baseline;\n  background: transparent; }\n\nmain, article, aside, figure, footer, header, nav, section, details, summary {\n  display: block; }\n\nhtml {\n  box-sizing: border-box; }\n\n*,\n*:before,\n*:after {\n  box-sizing: inherit; }\n\nimg,\nobject,\nembed {\n  max-width: 100%; }\n\nhtml {\n  overflow-y: scroll; }\n\nul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before,\nblockquote:after,\nq:before,\nq:after {\n  content: '';\n  content: none; }\n\na {\n  margin: 0;\n  padding: 0;\n  font-size: 100%;\n  vertical-align: baseline;\n  background: transparent; }\n\ndel {\n  text-decoration: line-through; }\n\nabbr[title], dfn[title] {\n  border-bottom: 1px dotted #000;\n  cursor: help; }\n\ntable {\n  border-collapse: separate;\n  border-spacing: 0; }\n\nth {\n  font-weight: bold;\n  vertical-align: bottom; }\n\ntd {\n  font-weight: normal;\n  vertical-align: top; }\n\nhr {\n  display: block;\n  height: 1px;\n  border: 0;\n  border-top: 1px solid #ccc;\n  margin: 1em 0;\n  padding: 0; }\n\ninput, select {\n  vertical-align: middle; }\n\npre {\n  white-space: pre;\n  white-space: pre-wrap;\n  white-space: pre-line;\n  word-wrap: break-word; }\n\ninput[type=\"radio\"] {\n  vertical-align: text-bottom; }\n\ninput[type=\"checkbox\"] {\n  vertical-align: bottom; }\n\n.ie7 input[type=\"checkbox\"] {\n  vertical-align: baseline; }\n\n.ie6 input {\n  vertical-align: text-bottom; }\n\nselect, input, textarea {\n  font: 99% sans-serif; }\n\ntable {\n  font-size: inherit;\n  font: 100%; }\n\nsmall {\n  font-size: 85%; }\n\nstrong {\n  font-weight: bold; }\n\ntd, td img {\n  vertical-align: top; }\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative; }\n\nsup {\n  top: -0.5em; }\n\nsub {\n  bottom: -0.25em; }\n\npre, code, kbd, samp {\n  font-family: monospace, sans-serif; }\n\n.clickable,\nlabel,\ninput[type=button],\ninput[type=submit],\ninput[type=file],\nbutton {\n  cursor: pointer; }\n\nbutton, input, select, textarea {\n  margin: 0; }\n\nbutton,\ninput[type=button] {\n  width: auto;\n  overflow: visible; }\n\n.ie7 img {\n  -ms-interpolation-mode: bicubic; }\n\n.clearfix:after {\n  content: \" \";\n  display: block;\n  clear: both; }\n\nbody {\n  background-color: #add8e6; }\n\nheader h1 {\n  user-select: none; }\n  header h1:hover {\n    cursor: default; }\n\n.sticker {\n  background: #fff;\n  min-height: 150px;\n  min-width: 200px;\n  max-height: 550px;\n  max-width: 400px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: #00f 1px solid;\n  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); }\n  .sticker .grab {\n    background-color: #00f;\n    position: absolute;\n    top: 0;\n    left: 0;\n    height: 30px;\n    width: 100%; }\n    .sticker .grab:hover {\n      cursor: move; }\n  .sticker .bar {\n    background: green;\n    position: relative;\n    top: 0;\n    left: 0;\n    height: 30px;\n    width: 100%; }\n    .sticker .bar i, .sticker .bar h2 {\n      line-height: 30px;\n      padding-left: .25rem;\n      font-size: 1.25rem;\n      color: #fff;\n      user-select: none; }\n  .sticker textarea {\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-width: 150px;\n    min-height: 150px;\n    max-width: 100%;\n    max-height: 450px;\n    background: transparent;\n    border: none; }\n  .sticker p {\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-width: 150px;\n    min-height: 150px;\n    background: transparent;\n    border: none; }\n  .sticker .button {\n    float: right;\n    color: #fff;\n    background: #00f;\n    font-family: sans-serif;\n    font-weight: bold;\n    font-size: 1rem;\n    margin: 2px;\n    padding: 5px;\n    text-align: center;\n    user-select: none;\n    border: none;\n    border-radius: 5px; }\n    .sticker .button:hover {\n      cursor: pointer;\n      background-color: #6666ff; }\n\n.note-text {\n  font-family: sans-serif;\n  font-size: 1.5rem; }\n\n.penny {\n  border-radius: 50%;\n  width: 50px;\n  height: 50px;\n  background-color: #008000; }\n  .penny p {\n    line-height: 50px;\n    width: 50px;\n    font-size: 2rem;\n    font-weight: bold;\n    text-align: center;\n    vertical-align: middle;\n    user-select: none; }\n    .penny p:hover {\n      cursor: pointer; }\n", ""]);
 
 // exports
 

@@ -7,9 +7,6 @@ export default class Layout extends React.Component {
     constructor( props ){
         super( props );
         this.state = {
-            newNote: {
-
-            },
             notes: []
         }
     }
@@ -22,10 +19,24 @@ export default class Layout extends React.Component {
         })
     }
 
+    componentWillMount(){
+        
+        console.log('w will mount: ', this.state);
+    }
+
+    componentDidMount(){
+        console.log('w did mount: ', this.state);
+    }
+
     render () {
+        console.log('w render: ',this.state);
         const notes = this.state.notes.slice()
-        .map(el => {
-            return <StickyNote note = { el } />
+        .map((el, i) => {
+            return <StickyNote
+                note = { el }
+                id = { i }
+                key = { i }
+            />
         });
 
         return <div>

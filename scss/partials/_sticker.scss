@@ -1,23 +1,42 @@
 .sticker {
     background: $stickerColor;
     min-height: 150px;
-    min-width: 150px;
+    min-width: 200px;
+    max-height: 550px;
+    max-width: 400px;
     position: absolute;
     left: 0;
     top: 0;
-    border: $mainColor 1.5px solid;
+    border: $mainColor 1px solid;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
 
-    .bar {
-        padding-top: 30px;
+    .grab {
+        background-color: $mainColor;
         position: absolute;
         top: 0;
         left: 0;
         height: 30px;
         width: 100%;
-        background: $mainColor;
+
         &:hover {
             cursor: move;
+        }
+
+    }
+
+    .bar {
+        background: green;
+        position: relative;
+        top: 0;
+        left: 0;
+        height: 30px;
+        width: 100%;
+        i, h2 {
+            line-height: 30px;
+            padding-left: .25rem;
+            font-size: 1.25rem;
+            color: #fff;
+            user-select: none;
         }
     }
 
@@ -27,6 +46,8 @@
         box-sizing: border-box;
         min-width: 150px;
         min-height: 150px;
+        max-width: 100%;
+        max-height: 450px;
         background: transparent;
         border: none;
     }
@@ -39,10 +60,27 @@
         min-height: 150px;
         background: transparent;
         border: none;
+        // overflow-y: scroll// - max znaków to lepszy pomysł...
     }
 
-    button {
+    .button {
+        float:right;
+        color: #fff;
+        background: $mainColor;
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 1rem;
+        margin: 2px;
+        padding: 5px;
+        // width: 3rem;
+        text-align: center;
         user-select: none;
+        border: none;
+        border-radius: 5px;
+        &:hover{
+            cursor: pointer;
+            background-color: lighten($mainColor, 20);
+        }
     }
 }
 
