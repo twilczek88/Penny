@@ -1,10 +1,11 @@
 .sticker {
 
-    animation: appear 0.1s 1;
+    animation: appear .2s 1;
+
     background: $stickerColor;
-    min-height: 150px;
-    min-width: 200px;
-    max-height: 550px;
+    // min-height: 150px;
+    // min-width: 200px;
+    // max-height: 550px;
     max-width: 400px;
     position: absolute;
     left: 0;
@@ -14,6 +15,7 @@
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
 
     .grab {
+        animation: appear .2s 1;
         background-color: $mainColor;
         position: absolute;
         top: 0;
@@ -117,5 +119,7 @@
     0% {
         background-color: transparent;
         color: transparent;
+        border-color: transparent;
+        box-shadow: 5px 5px 10px transparent;
     }
 }

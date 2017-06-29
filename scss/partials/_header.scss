@@ -1,32 +1,42 @@
 header {
-    margin-top: 50px;
-    margin-left: 100px;
-    font-family: 'Pacifico', cursive;
+    // float: left;
+    // display: block;
+    // margin-top: 50px;
+
+    // margin-left: 100px;
+
     color: $headerColor;
     user-select: none;
     font-size: 24px;
     font-weight: bold;
 
+
+
     h1 {
+        font-family: 'Pacifico', cursive;
         font-size: 72px;
         user-select: none;
     }
 
-    p {
-        line-height: 72px;
-        text-indent: 100px;
+    &> .header {
+        float: left;
+        & p {
+            font-family: 'Pacifico', cursive;
+            line-height: 72px;
+            text-indent: 100px;
+        }
     }
 
     &:hover {
         cursor: default;
     }
 
-    @media #{$smallScreen} {
-        position: static;
-        margin-top: 0;
-        margin-left: 2rem;
-        h1{
-            font-size: 48px;
-        }
-    }
+    // @media #{$smallScreen} {
+    //     position: static;
+    //     margin-top: 0;
+    //     margin-left: 2rem;
+    //     h1{
+    //         font-size: 48px;
+    //     }
+    // }
 }

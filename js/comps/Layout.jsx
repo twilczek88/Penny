@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './Header.jsx';
-import Penny from './Penny.jsx';
+// import Penny from './Penny.jsx';
 import Sticker from './StickyNote/Sticker.jsx';
 
 export default class Layout extends React.Component {
@@ -45,16 +45,15 @@ export default class Layout extends React.Component {
         });
     }
 
-    componentDidMount() {}
-
     render() {
-        const notes = this.state.notes.slice().map((el, i) => {
-            return <Sticker mobile={this.props.mobile} app={this.props.app} note={el} key={i}/>
+        const zindex = this.state.notes.slice().length;
+        const notes = this.state.notes.slice()
+        .map((el, i) => {
+            return <Sticker mobile={this.props.mobile} app={this.props.app} note={el} key={i} iterator = {i} zindex = {zindex} />
         });
 
         return <div className='wrapper'>
-            <Penny spawnNewNote={this.spawnNewNote} pennyStyle={this.props.pennyStyle}/>
-            <Header mobile={this.props.mobile}/>
+            <Header spawnNewNote={this.spawnNewNote} mobile={this.props.mobile}/>
             {notes}
         </div>
     }

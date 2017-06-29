@@ -1,11 +1,13 @@
 # Penny
-sticky-note project in ReactJS
+sticky-note project in ReactJS made for CodersLab as a final project for front-end dev course.
+Feel free to click the penny icon and leave your own note on the wall for all to see.
 
 ## Technologies used:
 * ReactJS
 * JS (ES6)
-* Webpack
 * SASS
+* Webpack
+* google firebase database integration
 
 
 ## To do:

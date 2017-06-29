@@ -39,10 +39,6 @@ export default class Sticker extends React.Component {
         })
     }
 
-    sendData = (data) => {}
-
-    handleDeleteClick = () => {}
-
     updatePosition = (x, y, event) => {
         this.setState({
             note: {
@@ -55,6 +51,9 @@ export default class Sticker extends React.Component {
         });
 
         if (event.target.parentElement.dataset.id == this.state.note.id) {
+            event.target.parentElement.zIndex = this.props.zindex + 1;
+            console.log("zindex", event.target.parentElement.zIndex);
+            console.log(event.target.parentElement.zIndex);
             const app = this.props.app;
             const note = app.database().ref(`notes/${this.state.note.id}`);
             note.update({"posX": x, "posY": y});
@@ -114,6 +113,7 @@ export default class Sticker extends React.Component {
 
         onDragEnd = function(e) {
             self.updatePosition(positionX, positionY, e);
+            // console.log(draggedEl);
             draggedEl = null;
             grabPointX = null;
             grabPointY = null;
@@ -131,7 +131,8 @@ export default class Sticker extends React.Component {
     render() {
 
         const style = {
-            transform: `translateX(${this.props.note.posX}px) translateY(${this.props.note.posY}px)`
+            transform: `translateX(${this.props.note.posX}px) translateY(${this.props.note.posY}px)`,
+            zIndex: `${1 + this.props.iterator}`
         }
 
         const header = <div className='grab'></div>;
