@@ -9,14 +9,16 @@ export default class StickyNote extends React.Component {
     }
 
     onTextChange = ( e ) => {
-        this.setState({
-            textVal: e.target.values
-        });
+        if ( e.target.value.length <= 400 ){
+            this.setState({
+                textVal: e.target.value.slice(0, 400)
+            });
 
-        if( typeof this.props.parseText === 'function' ) {
-            this.props.parseText( e.target.value );
-        } else {
-            console.error( 'dupa dupa dupa' );
+            if( typeof this.props.parseText === 'function' ) {
+                this.props.parseText( e.target.value );
+            } else {
+                console.error( 'dupa dupa dupa' );
+            }
         }
     }
 

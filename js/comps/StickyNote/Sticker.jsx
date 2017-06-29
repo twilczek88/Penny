@@ -3,54 +3,45 @@ import ToDo from './ToDo/ToDo.jsx';
 import Text from './Text/Text.jsx';
 
 export default class Sticker extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             note: this.props.note
         };
     }
 
-    handlePostClick = () => {
+    handlePostClick = (e) => {
         const app = this.props.app;
-        const dataNotes = app.database().ref('notes')
+        const dataNotes = app.database().ref('notes');
 
-        const push = dataNotes.push({
-            id: this.state.note.id,
-            editable: false,
-            text: this.state.note.text,
-            posX: this.state.note.posX,
-            posY: this.state.note.posY
-        });
+        const push = dataNotes.push({id: this.state.note.id, editable: false, text: this.state.note.text, posX: this.state.note.posX, posY: this.state.note.posY});
 
         this.setState({
-            note : {
-                id : push.key,
-                editable : false,
-                text : this.state.note.text,
-                posX : this.state.note.posX,
-                posY : this.state.note.posY
+            note: {
+                id: push.key,
+                editable: false,
+                text: this.state.note.text,
+                posX: this.state.note.posX,
+                posY: this.state.note.posY
             }
         });
     }
 
-    parseText = ( text ) => {
+    parseText = (text) => {
         this.setState({
             note: {
-                id : this.state.note.id,
-                editable : this.state.note.editable,
-                text : text,
-                posX : this.state.note.posX,
-                posY : this.state.note.posy
+                id: this.state.note.id,
+                editable: this.state.note.editable,
+                text: text,
+                posX: this.state.note.posX,
+                posY: this.state.note.posy
             }
         })
     }
 
-    sendData = ( data ) => {
-    }
+    sendData = (data) => {}
 
-    handleDeleteClick = () => {
-        console.log('delete click');
-    }
+    handleDeleteClick = () => {}
 
     updatePosition = (x, y, event) => {
         this.setState({
@@ -63,14 +54,10 @@ export default class Sticker extends React.Component {
             }
         });
 
-        if ( event.target.parentElement.dataset.id == this.state.note.id ) {
+        if (event.target.parentElement.dataset.id == this.state.note.id) {
             const app = this.props.app;
             const note = app.database().ref(`notes/${this.state.note.id}`);
-            console.log('sdaasd',this.state.note.id);
-            note.update({
-                "posX": x,
-                "posY": y
-            });
+            note.update({"posX": x, "posY": y});
         }
     }
 
@@ -91,9 +78,9 @@ export default class Sticker extends React.Component {
             let stickerEl = null;
         }
 
-        onDragStart = function( e ) {
+        onDragStart = function(e) {
             let boundingClientRect;
-            if ( e.target.className.indexOf('grab') === -1 ) {
+            if (e.target.className.indexOf('grab') === -1) {
                 return;
             }
 
@@ -104,19 +91,19 @@ export default class Sticker extends React.Component {
             grabPointX = boundingClientRect.left - e.clientX;
         };
 
-        onDrag = function( e ) {
-            if( !draggedEl ){
+        onDrag = function(e) {
+            if (!draggedEl) {
                 return;
             }
 
             let posX = e.clientX + grabPointX,
                 posY = e.clientY + grabPointY;
 
-            if ( posX < 0 ) {
+            if (posX < 0) {
                 posX = 0;
             }
 
-            if ( posY < 0 ) {
+            if (posY < 0) {
                 posY = 0;
             }
 
@@ -125,13 +112,8 @@ export default class Sticker extends React.Component {
             positionY = posY;
         };
 
-        onDragEnd = function( e ) {
-            // console.log(e.target.parentElement.dataset.id);
-            // console.log('id w evencie: ', e.target.parentElement.dataset.id, 'id w self: ', self.state.note.id);
-            // if ( e.target.parentElement.dataset.id == self.state.note.id ) {
-            //     self.updatePosition( positionX, positionY, e );
-            // }
-            self.updatePosition( positionX, positionY, e );
+        onDragEnd = function(e) {
+            self.updatePosition(positionX, positionY, e);
             draggedEl = null;
             grabPointX = null;
             grabPointY = null;
@@ -141,7 +123,7 @@ export default class Sticker extends React.Component {
         document.addEventListener('mousemove', onDrag, false);
         document.addEventListener('mouseup', onDragEnd, false);
 
-        [...document.querySelectorAll('.sticker')].forEach( el => {
+        [...document.querySelectorAll('.sticker')].forEach(el => {
             el.addEventListener('mousedown', onDragStart, false);
         });
     }
@@ -152,40 +134,23 @@ export default class Sticker extends React.Component {
             transform: `translateX(${this.props.note.posX}px) translateY(${this.props.note.posY}px)`
         }
 
-        const header = <div className='grab' >
-        </div>;
+        const header = <div className='grab'></div>;
 
-        const footer = <div>
-        </div>;
+        const footer = <div></div>;
 
-        if( this.state.note.editable ){
-            return <div className= 'sticker'
-
-                    style = { style }
-                >
-                { header }
-                <Text
-                    editable = { this.state.note.editable }
-                    parseText = { this.parseText }
-                />
-                <div
-                    className = 'button'
-                    onClick = { this.handlePostClick }>
-                        post!
+        if (this.state.note.editable) {
+            return <div className='sticker' style={style}>
+                {header}
+                <Text editable={this.state.note.editable} parseText={this.parseText}/>
+                <div className='button' onClick={this.handlePostClick}>
+                    post!
                 </div>
-                { footer }
+                {footer}
             </div>
         } else {
-            return <div className='sticker'
-                    style = { style }
-                    data-id = { this.state.note.id }
-                >
-                { header }
-                <Text
-                    editable = { this.state.note.editable }
-                    text = { this.state.note.text }
-                />
-                { footer }
+            return <div className='sticker' style={style} data-id={this.state.note.id}>
+                {header}
+                <Text editable={this.state.note.editable} text={this.state.note.text}/> {footer}
             </div>
         }
     }

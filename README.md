@@ -19,5 +19,5 @@ sticky-note project in ReactJS
 * then:
 - [x] add basic styles to the page
 - [ ] add checklist option to sticky-sticky note
-- [ ] integrate the entire thing with online JSON database
+- [x] integrate the entire thing with online JSON database
 - [ ] Add some awesome icons and stuff

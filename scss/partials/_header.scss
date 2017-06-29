@@ -1,6 +1,32 @@
-header h1 {
+header {
+    margin-top: 50px;
+    margin-left: 100px;
+    font-family: 'Pacifico', cursive;
+    color: $headerColor;
     user-select: none;
+    font-size: 24px;
+    font-weight: bold;
+
+    h1 {
+        font-size: 72px;
+        user-select: none;
+    }
+
+    p {
+        line-height: 72px;
+        text-indent: 100px;
+    }
+
     &:hover {
         cursor: default;
+    }
+
+    @media #{$smallScreen} {
+        position: static;
+        margin-top: 0;
+        margin-left: 2rem;
+        h1{
+            font-size: 48px;
+        }
     }
 }

@@ -1,7 +1,12 @@
 @import './modules/reset';
+@import './modules/fonts';
 @import './modules/variables';
 @import './modules/layout';
 
 @import './partials/header';
 @import './partials/sticker';
 @import './partials/penny';
+
+// * {
+//     transition: all 0.5 ease;
+// }

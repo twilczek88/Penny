@@ -1,6 +1,11 @@
 //colors
 $stickerColor: #fff;
-$mainColor: #00f;
+$mainColor: #ebca68;
+$backgroundColor: #a1a1ff;
+$headerColor: lighten($backgroundColor, 5);
 
-$backgroundColor: #add8e6;
-$pennyColor: #008000;
+//penny colors
+$pennyColor: #ffe829;
+
+//media-queries
+$smallScreen: '(max-width: 640px)';
