@@ -1,42 +1,68 @@
 import React from 'react';
 import Header from './Header.jsx';
 import Penny from './Penny.jsx';
-import StickyNote from './StickyNote/Sticker.jsx';
+import Sticker from './StickyNote/Sticker.jsx';
 
 export default class Layout extends React.Component {
     constructor( props ){
         super( props );
         this.state = {
+            newNote: {
+                id: 0,
+                editable: true,
+                text: '',
+                posX: 0,
+                posY: 0
+            },
             notes: []
         }
     }
 
     spawnNewNote = () => {
         const notes = this.state.notes.slice();
-        notes.push( this.newNote );
+        const newNote = this.state.newNote;
+        newNote.id = '';
+        notes.push( newNote );
         this.setState({
             notes: notes
-        })
+        });
     }
 
     componentWillMount(){
-        
-        console.log('w will mount: ', this.state);
+        // let note;
+        const notes = [];
+        const app = this.props.app;
+        const dataNotes = app.database().ref('notes');
+
+        dataNotes.once("value").then( data => {
+            const d = data.val();
+            for ( let val in d ){
+                d[val].id = val;
+                notes.push( d[val] );
+                console.log(d[val].id, val);
+            }
+            console.log('notes: ', notes);
+
+            this.setState({
+                notes : notes
+            });
+        }, error => {
+            console.error( `error: ${ error.code }` );
+        });
     }
 
     componentDidMount(){
-        console.log('w did mount: ', this.state);
     }
 
     render () {
-        console.log('w render: ',this.state);
         const notes = this.state.notes.slice()
         .map((el, i) => {
-            return <StickyNote
+            return <Sticker
+                app = { this.props.app }
                 note = { el }
-                id = { i }
                 key = { i }
             />
+        console.log(this.state);
         });
 
         return <div>
