@@ -3,9 +3,7 @@
     animation: appear .2s 1;
 
     background: $stickerColor;
-    // min-height: 150px;
-    // min-width: 200px;
-    // max-height: 550px;
+
     max-width: 400px;
     position: absolute;
     left: 0;
@@ -29,13 +27,6 @@
     }
 
     .bar {
-        // background: green;
-        // position: relative;
-        // top: 0;
-        // left: 0;
-        // height: 30px;
-        // width: 100%;
-
         h2,
         i {
             line-height: 30px;
@@ -47,6 +38,8 @@
     }
 
     textarea {
+        font-family: sans-serif;
+        font-size: 1.5rem;
         margin-top: 30px;
         padding: 3px 10px;
         box-sizing: border-box;
@@ -101,6 +94,7 @@
 }
 
 .note-text {
+    text-align: justify;
     font-family: sans-serif;
     font-size: 1.5rem;
     user-select: none;

@@ -11,20 +11,24 @@ export default class Sticker extends React.Component {
     }
 
     handlePostClick = (e) => {
-        const app = this.props.app;
-        const dataNotes = app.database().ref('notes');
+        if ( !e.target.value == true ) {
+            const app = this.props.app;
+            const dataNotes = app.database().ref('notes');
 
-        const push = dataNotes.push({id: this.state.note.id, editable: false, text: this.state.note.text, posX: this.state.note.posX, posY: this.state.note.posY});
+            const push = dataNotes.push({id: this.state.note.id, editable: false, text: this.state.note.text, posX: this.state.note.posX, posY: this.state.note.posY});
 
-        this.setState({
-            note: {
-                id: push.key,
-                editable: false,
-                text: this.state.note.text,
-                posX: this.state.note.posX,
-                posY: this.state.note.posY
-            }
-        });
+            this.setState({
+                note: {
+                    id: push.key,
+                    editable: false,
+                    text: this.state.note.text,
+                    posX: this.state.note.posX,
+                    posY: this.state.note.posY
+                }
+            });
+        } else {
+            console.log('dupa');
+        }
     }
 
     parseText = (text) => {
