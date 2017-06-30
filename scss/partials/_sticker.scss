@@ -44,10 +44,10 @@
         padding: 3px 10px;
         box-sizing: border-box;
         min-height: 150px;
-        max-width: 100%;
-        max-height: 450px;
+        width: 100%;
         background: transparent;
         border: none;
+        resize: both;
     }
 
     p {
@@ -106,8 +106,6 @@
 .random-color {
 
 }
-
-
 
 @keyframes appear {
     0% {

@@ -8,11 +8,15 @@ export default class Layout extends React.Component {
         super(props);
         this.state = {
             newNote: {
-                id: 0,
+                id: '',
                 editable: true,
                 text: '',
                 posX: 0,
-                posY: 0
+                posY: 0,
+                width: '224px',
+                zindex: 0,
+                title: '',
+                likes: 0
             },
             notes: []
         }
@@ -21,13 +25,11 @@ export default class Layout extends React.Component {
     spawnNewNote = (e) => {
         const notes = this.state.notes.slice();
         const newNote = this.state.newNote;
-        newNote.id = '';
         notes.push(newNote);
         this.setState({notes: notes});
     }
 
     componentWillMount() {
-        // let note;
         const notes = [];
         const app = this.props.app;
         const dataNotes = app.database().ref('notes');

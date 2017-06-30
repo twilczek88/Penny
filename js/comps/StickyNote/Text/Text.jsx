@@ -4,7 +4,8 @@ export default class StickyNote extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            textVal: ''
+            textVal: '',
+            titleVal: ''
         };
     }
 

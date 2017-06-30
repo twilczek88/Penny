@@ -9961,18 +9961,21 @@ var Layout = function (_React$Component) {
         _this.spawnNewNote = function (e) {
             var notes = _this.state.notes.slice();
             var newNote = _this.state.newNote;
-            newNote.id = '';
             notes.push(newNote);
             _this.setState({ notes: notes });
         };
 
         _this.state = {
             newNote: {
-                id: 0,
+                id: '',
                 editable: true,
                 text: '',
                 posX: 0,
-                posY: 0
+                posY: 0,
+                width: '224px',
+                zindex: 0,
+                title: '',
+                likes: 0
             },
             notes: []
         };
@@ -9984,7 +9987,6 @@ var Layout = function (_React$Component) {
         value: function componentWillMount() {
             var _this2 = this;
 
-            // let note;
             var notes = [];
             var app = this.props.app;
             var dataNotes = app.database().ref('notes');
@@ -10137,11 +10139,20 @@ var Sticker = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Sticker.__proto__ || Object.getPrototypeOf(Sticker)).call(this, props));
 
         _this.handlePostClick = function (e) {
-            if (!e.target.value == true) {
+            if (_this.state.note.text != '') {
                 var app = _this.props.app;
                 var dataNotes = app.database().ref('notes');
-
-                var push = dataNotes.push({ id: _this.state.note.id, editable: false, text: _this.state.note.text, posX: _this.state.note.posX, posY: _this.state.note.posY });
+                var push = dataNotes.push({
+                    id: _this.state.note.id,
+                    editable: false,
+                    text: _this.state.note.text,
+                    posX: _this.state.note.posX,
+                    posY: _this.state.note.posY,
+                    width: _this.state.note.width,
+                    title: _this.state.note.title,
+                    likes: _this.state.note.likes,
+                    zindex: _this.state.note.zindex
+                });
 
                 _this.setState({
                     note: {
@@ -10149,11 +10160,15 @@ var Sticker = function (_React$Component) {
                         editable: false,
                         text: _this.state.note.text,
                         posX: _this.state.note.posX,
-                        posY: _this.state.note.posY
+                        posY: _this.state.note.posY,
+                        width: _this.state.note.width,
+                        title: _this.state.note.title,
+                        likes: _this.state.note.likes,
+                        zindex: _this.state.note.zindex
                     }
                 });
             } else {
-                console.log('dupa');
+                console.warn('notka nie może być pusta');
             }
         };
 
@@ -10164,9 +10179,57 @@ var Sticker = function (_React$Component) {
                     editable: _this.state.note.editable,
                     text: text,
                     posX: _this.state.note.posX,
-                    posY: _this.state.note.posy
+                    posY: _this.state.note.posy,
+                    width: _this.state.note.width,
+                    title: _this.state.note.title,
+                    likes: _this.state.note.likes,
+                    zindex: _this.state.note.zindex
                 }
             });
+
+            if (_this.state.note.text.length <= 100) {
+                _this.setState({
+                    note: {
+                        id: _this.state.note.id,
+                        editable: _this.state.note.editable,
+                        text: text,
+                        posX: _this.state.note.posX,
+                        posY: _this.state.note.posy,
+                        width: '224px',
+                        title: _this.state.note.title,
+                        likes: _this.state.note.likes,
+                        zindex: _this.state.note.zindex
+                    }
+                });
+            } else if (_this.state.note.text.length >= 180 && _this.state.note.text.length <= 250) {
+                _this.setState({
+                    note: {
+                        id: _this.state.note.id,
+                        editable: _this.state.note.editable,
+                        text: text,
+                        posX: _this.state.note.posX,
+                        posY: _this.state.note.posy,
+                        width: '300px',
+                        title: _this.state.note.title,
+                        likes: _this.state.note.likes,
+                        zindex: _this.state.note.zindex
+                    }
+                });
+            } else {
+                _this.setState({
+                    note: {
+                        id: _this.state.note.id,
+                        editable: _this.state.note.editable,
+                        text: text,
+                        posX: _this.state.note.posX,
+                        posY: _this.state.note.posy,
+                        width: '500px',
+                        title: _this.state.note.title,
+                        likes: _this.state.note.likes,
+                        zindex: _this.state.note.zindex
+                    }
+                });
+            }
         };
 
         _this.updatePosition = function (x, y, event) {
@@ -10176,14 +10239,15 @@ var Sticker = function (_React$Component) {
                     editable: _this.state.note.editable,
                     text: _this.state.note.text,
                     posX: x,
-                    posY: y
+                    posY: y,
+                    width: _this.state.note.width,
+                    title: _this.state.note.title,
+                    likes: _this.state.note.likes,
+                    zindex: _this.state.note.zindex
                 }
             });
 
             if (event.target.parentElement.dataset.id == _this.state.note.id) {
-                event.target.parentElement.zIndex = _this.props.zindex + 1;
-                console.log("zindex", event.target.parentElement.zIndex);
-                console.log(event.target.parentElement.zIndex);
                 var app = _this.props.app;
                 var note = app.database().ref('notes/' + _this.state.note.id);
                 note.update({ "posX": x, "posY": y });
@@ -10191,7 +10255,17 @@ var Sticker = function (_React$Component) {
         };
 
         _this.state = {
-            note: _this.props.note
+            note: {
+                id: _this.props.note.id,
+                editable: _this.props.note.editable,
+                text: _this.props.note.text,
+                posX: _this.props.note.posX,
+                posY: _this.props.note.posY,
+                width: _this.props.note.width,
+                title: _this.props.note.title,
+                likes: _this.props.note.likes,
+                zindex: _this.props.note.zindex
+            }
         };
         return _this;
     }
@@ -10222,6 +10296,7 @@ var Sticker = function (_React$Component) {
                 }
 
                 draggedEl = this;
+                draggedEl.zIndex = self.props.zindex + 1;
                 boundingClientRect = draggedEl.getBoundingClientRect();
 
                 grabPointY = boundingClientRect.top - e.clientY;
@@ -10251,7 +10326,6 @@ var Sticker = function (_React$Component) {
 
             onDragEnd = function onDragEnd(e) {
                 self.updatePosition(positionX, positionY, e);
-                // console.log(draggedEl);
                 draggedEl = null;
                 grabPointX = null;
                 grabPointY = null;
@@ -10270,7 +10344,9 @@ var Sticker = function (_React$Component) {
 
             var style = {
                 transform: 'translateX(' + this.props.note.posX + 'px) translateY(' + this.props.note.posY + 'px)',
-                zIndex: '' + (1 + this.props.iterator)
+                zIndex: '' + (1 + this.props.iterator),
+                width: this.state.note.width,
+                height: this.state.note.height
             };
 
             var header = _react2.default.createElement('div', { className: 'grab' });
@@ -10356,7 +10432,8 @@ var StickyNote = function (_React$Component) {
         };
 
         _this.state = {
-            textVal: ''
+            textVal: '',
+            titleVal: ''
         };
         return _this;
     }
@@ -11683,7 +11760,7 @@ exports = module.exports = __webpack_require__(95)(undefined);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Pacifico);", ""]);
 
 // module
-exports.push([module.i, "html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font-weight: normal;\n  vertical-align: baseline;\n  background: transparent; }\n\nmain, article, aside, figure, footer, header, nav, section, details, summary {\n  display: block; }\n\nhtml {\n  box-sizing: border-box; }\n\n*,\n*:before,\n*:after {\n  box-sizing: inherit; }\n\nimg,\nobject,\nembed {\n  max-width: 100%; }\n\nhtml {\n  overflow-y: scroll; }\n\nul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before,\nblockquote:after,\nq:before,\nq:after {\n  content: '';\n  content: none; }\n\na {\n  margin: 0;\n  padding: 0;\n  font-size: 100%;\n  vertical-align: baseline;\n  background: transparent; }\n\ndel {\n  text-decoration: line-through; }\n\nabbr[title], dfn[title] {\n  border-bottom: 1px dotted #000;\n  cursor: help; }\n\ntable {\n  border-collapse: separate;\n  border-spacing: 0; }\n\nth {\n  font-weight: bold;\n  vertical-align: bottom; }\n\ntd {\n  font-weight: normal;\n  vertical-align: top; }\n\nhr {\n  display: block;\n  height: 1px;\n  border: 0;\n  border-top: 1px solid #ccc;\n  margin: 1em 0;\n  padding: 0; }\n\ninput, select {\n  vertical-align: middle; }\n\npre {\n  white-space: pre;\n  white-space: pre-wrap;\n  white-space: pre-line;\n  word-wrap: break-word; }\n\ninput[type=\"radio\"] {\n  vertical-align: text-bottom; }\n\ninput[type=\"checkbox\"] {\n  vertical-align: bottom; }\n\n.ie7 input[type=\"checkbox\"] {\n  vertical-align: baseline; }\n\n.ie6 input {\n  vertical-align: text-bottom; }\n\nselect, input, textarea {\n  font: 99% sans-serif; }\n\ntable {\n  font-size: inherit;\n  font: 100%; }\n\nsmall {\n  font-size: 85%; }\n\nstrong {\n  font-weight: bold; }\n\ntd, td img {\n  vertical-align: top; }\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative; }\n\nsup {\n  top: -0.5em; }\n\nsub {\n  bottom: -0.25em; }\n\npre, code, kbd, samp {\n  font-family: monospace, sans-serif; }\n\n.clickable,\nlabel,\ninput[type=button],\ninput[type=submit],\ninput[type=file],\nbutton {\n  cursor: pointer; }\n\nbutton, input, select, textarea {\n  margin: 0; }\n\nbutton,\ninput[type=button] {\n  width: auto;\n  overflow: visible; }\n\n.ie7 img {\n  -ms-interpolation-mode: bicubic; }\n\n.clearfix:after {\n  content: \" \";\n  display: block;\n  clear: both; }\n\nbody {\n  background-color: #a1a1ff; }\n\nheader {\n  color: #bbbbff;\n  user-select: none;\n  font-size: 24px;\n  font-weight: bold; }\n  header h1 {\n    font-family: 'Pacifico', cursive;\n    font-size: 72px;\n    user-select: none; }\n  header > .header {\n    float: left; }\n    header > .header p {\n      font-family: 'Pacifico', cursive;\n      line-height: 72px;\n      text-indent: 100px; }\n  header:hover {\n    cursor: default; }\n\n.sticker {\n  animation: appear .2s 1;\n  background: #fff;\n  max-width: 400px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 0;\n  border: #ebca68 2px solid;\n  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); }\n  .sticker .grab {\n    animation: appear .2s 1;\n    background-color: #ebca68;\n    position: absolute;\n    top: 0;\n    left: 0;\n    height: 30px;\n    width: 100%; }\n    .sticker .grab:hover {\n      cursor: move; }\n  .sticker .bar h2,\n  .sticker .bar i {\n    line-height: 30px;\n    padding-left: 0.25rem;\n    font-size: 1.25rem;\n    color: #fff;\n    user-select: none; }\n  .sticker textarea {\n    font-family: sans-serif;\n    font-size: 1.5rem;\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-height: 150px;\n    max-width: 100%;\n    max-height: 450px;\n    background: transparent;\n    border: none; }\n  .sticker p {\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-width: 150px;\n    min-height: 150px;\n    background: transparent;\n    border: none; }\n  .sticker .button {\n    float: right;\n    color: #fff;\n    background: #ebca68;\n    font-family: sans-serif;\n    font-weight: bold;\n    font-size: 1rem;\n    margin: 2px;\n    padding: 5px;\n    text-align: center;\n    user-select: none;\n    border: none;\n    border-radius: 5px; }\n    .sticker .button:hover {\n      cursor: pointer;\n      background-color: #f7eac2; }\n  @media (max-width: 640px) {\n    .sticker {\n      position: static;\n      top: 0;\n      left: 0;\n      max-width: 100vw;\n      min-width: 100vw; }\n      .sticker .grab {\n        position: static; } }\n\n.note-text {\n  text-align: justify;\n  font-family: sans-serif;\n  font-size: 1.5rem;\n  user-select: none; }\n  .note-text:hover {\n    cursor: default; }\n\n@keyframes appear {\n  0% {\n    background-color: transparent;\n    color: transparent;\n    border-color: transparent;\n    box-shadow: 5px 5px 10px transparent; } }\n\n.penny {\n  box-shadow: 10px 10px 10px transparent;\n  float: left;\n  border-radius: 50%;\n  height: 100px;\n  width: 100px;\n  margin: 74.5px 50px;\n  background-color: #9292ff; }\n  .penny:hover {\n    transition: all 0.1s ease;\n    background-color: #bbbbff;\n    box-shadow: 5px 5px 10px black; }\n  .penny p {\n    color: #6161ff;\n    line-height: 100px;\n    width: 100px;\n    font-size: 3rem;\n    font-weight: bold;\n    text-align: center;\n    vertical-align: middle;\n    user-select: none; }\n    .penny p:hover {\n      transition: all 0.1s ease;\n      cursor: pointer;\n      color: #a1a1ff; }\n", ""]);
+exports.push([module.i, "html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font-weight: normal;\n  vertical-align: baseline;\n  background: transparent; }\n\nmain, article, aside, figure, footer, header, nav, section, details, summary {\n  display: block; }\n\nhtml {\n  box-sizing: border-box; }\n\n*,\n*:before,\n*:after {\n  box-sizing: inherit; }\n\nimg,\nobject,\nembed {\n  max-width: 100%; }\n\nhtml {\n  overflow-y: scroll; }\n\nul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before,\nblockquote:after,\nq:before,\nq:after {\n  content: '';\n  content: none; }\n\na {\n  margin: 0;\n  padding: 0;\n  font-size: 100%;\n  vertical-align: baseline;\n  background: transparent; }\n\ndel {\n  text-decoration: line-through; }\n\nabbr[title], dfn[title] {\n  border-bottom: 1px dotted #000;\n  cursor: help; }\n\ntable {\n  border-collapse: separate;\n  border-spacing: 0; }\n\nth {\n  font-weight: bold;\n  vertical-align: bottom; }\n\ntd {\n  font-weight: normal;\n  vertical-align: top; }\n\nhr {\n  display: block;\n  height: 1px;\n  border: 0;\n  border-top: 1px solid #ccc;\n  margin: 1em 0;\n  padding: 0; }\n\ninput, select {\n  vertical-align: middle; }\n\npre {\n  white-space: pre;\n  white-space: pre-wrap;\n  white-space: pre-line;\n  word-wrap: break-word; }\n\ninput[type=\"radio\"] {\n  vertical-align: text-bottom; }\n\ninput[type=\"checkbox\"] {\n  vertical-align: bottom; }\n\n.ie7 input[type=\"checkbox\"] {\n  vertical-align: baseline; }\n\n.ie6 input {\n  vertical-align: text-bottom; }\n\nselect, input, textarea {\n  font: 99% sans-serif; }\n\ntable {\n  font-size: inherit;\n  font: 100%; }\n\nsmall {\n  font-size: 85%; }\n\nstrong {\n  font-weight: bold; }\n\ntd, td img {\n  vertical-align: top; }\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative; }\n\nsup {\n  top: -0.5em; }\n\nsub {\n  bottom: -0.25em; }\n\npre, code, kbd, samp {\n  font-family: monospace, sans-serif; }\n\n.clickable,\nlabel,\ninput[type=button],\ninput[type=submit],\ninput[type=file],\nbutton {\n  cursor: pointer; }\n\nbutton, input, select, textarea {\n  margin: 0; }\n\nbutton,\ninput[type=button] {\n  width: auto;\n  overflow: visible; }\n\n.ie7 img {\n  -ms-interpolation-mode: bicubic; }\n\n.clearfix:after {\n  content: \" \";\n  display: block;\n  clear: both; }\n\nbody {\n  background-color: #a1a1ff; }\n\nheader {\n  color: #bbbbff;\n  user-select: none;\n  font-size: 24px;\n  font-weight: bold; }\n  header h1 {\n    font-family: 'Pacifico', cursive;\n    font-size: 72px;\n    user-select: none; }\n  header > .header {\n    float: left; }\n    header > .header p {\n      font-family: 'Pacifico', cursive;\n      line-height: 72px;\n      text-indent: 100px; }\n  header:hover {\n    cursor: default; }\n\n.sticker {\n  animation: appear .2s 1;\n  background: #fff;\n  max-width: 400px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 0;\n  border: #ebca68 2px solid;\n  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); }\n  .sticker .grab {\n    animation: appear .2s 1;\n    background-color: #ebca68;\n    position: absolute;\n    top: 0;\n    left: 0;\n    height: 30px;\n    width: 100%; }\n    .sticker .grab:hover {\n      cursor: move; }\n  .sticker .bar h2,\n  .sticker .bar i {\n    line-height: 30px;\n    padding-left: 0.25rem;\n    font-size: 1.25rem;\n    color: #fff;\n    user-select: none; }\n  .sticker textarea {\n    font-family: sans-serif;\n    font-size: 1.5rem;\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-height: 150px;\n    width: 100%;\n    background: transparent;\n    border: none;\n    resize: both; }\n  .sticker p {\n    margin-top: 30px;\n    padding: 3px 10px;\n    box-sizing: border-box;\n    min-width: 150px;\n    min-height: 150px;\n    background: transparent;\n    border: none; }\n  .sticker .button {\n    float: right;\n    color: #fff;\n    background: #ebca68;\n    font-family: sans-serif;\n    font-weight: bold;\n    font-size: 1rem;\n    margin: 2px;\n    padding: 5px;\n    text-align: center;\n    user-select: none;\n    border: none;\n    border-radius: 5px; }\n    .sticker .button:hover {\n      cursor: pointer;\n      background-color: #f7eac2; }\n  @media (max-width: 640px) {\n    .sticker {\n      position: static;\n      top: 0;\n      left: 0;\n      max-width: 100vw;\n      min-width: 100vw; }\n      .sticker .grab {\n        position: static; } }\n\n.note-text {\n  text-align: justify;\n  font-family: sans-serif;\n  font-size: 1.5rem;\n  user-select: none; }\n  .note-text:hover {\n    cursor: default; }\n\n@keyframes appear {\n  0% {\n    background-color: transparent;\n    color: transparent;\n    border-color: transparent;\n    box-shadow: 5px 5px 10px transparent; } }\n\n.penny {\n  box-shadow: 10px 10px 10px transparent;\n  float: left;\n  border-radius: 50%;\n  height: 100px;\n  width: 100px;\n  margin: 74.5px 50px;\n  background-color: #9292ff; }\n  .penny:hover {\n    transition: all 0.1s ease;\n    background-color: #bbbbff;\n    box-shadow: 5px 5px 10px black; }\n  .penny p {\n    color: #6161ff;\n    line-height: 100px;\n    width: 100px;\n    font-size: 3rem;\n    font-weight: bold;\n    text-align: center;\n    vertical-align: middle;\n    user-select: none; }\n    .penny p:hover {\n      transition: all 0.1s ease;\n      cursor: pointer;\n      color: #a1a1ff; }\n", ""]);
 
 // exports
 

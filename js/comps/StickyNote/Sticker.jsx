@@ -6,16 +6,35 @@ export default class Sticker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            note: this.props.note
+            note: {
+                id: this.props.note.id,
+                editable: this.props.note.editable,
+                text: this.props.note.text,
+                posX: this.props.note.posX,
+                posY: this.props.note.posY,
+                width: this.props.note.width,
+                title: this.props.note.title,
+                likes: this.props.note.likes,
+                zindex: this.props.note.zindex
+            }
         };
     }
 
     handlePostClick = (e) => {
-        if ( !e.target.value == true ) {
+        if ( this.state.note.text != '' ) {
             const app = this.props.app;
             const dataNotes = app.database().ref('notes');
-
-            const push = dataNotes.push({id: this.state.note.id, editable: false, text: this.state.note.text, posX: this.state.note.posX, posY: this.state.note.posY});
+            const push = dataNotes.push({
+                id: this.state.note.id,
+                editable: false,
+                text: this.state.note.text,
+                posX: this.state.note.posX,
+                posY: this.state.note.posY,
+                width: this.state.note.width,
+                title: this.state.note.title,
+                likes: this.state.note.likes,
+                zindex: this.state.note.zindex
+            });
 
             this.setState({
                 note: {
@@ -23,24 +42,78 @@ export default class Sticker extends React.Component {
                     editable: false,
                     text: this.state.note.text,
                     posX: this.state.note.posX,
-                    posY: this.state.note.posY
+                    posY: this.state.note.posY,
+                    width: this.state.note.width,
+                    title: this.state.note.title,
+                    likes: this.state.note.likes,
+                    zindex: this.state.note.zindex
                 }
             });
         } else {
-            console.log('dupa');
+            console.warn('notka nie może być pusta');
         }
     }
 
-    parseText = (text) => {
+    parseText = ( text ) => {
         this.setState({
             note: {
                 id: this.state.note.id,
                 editable: this.state.note.editable,
                 text: text,
                 posX: this.state.note.posX,
-                posY: this.state.note.posy
+                posY: this.state.note.posy,
+                width: this.state.note.width,
+                title: this.state.note.title,
+                likes: this.state.note.likes,
+                zindex: this.state.note.zindex
             }
-        })
+        });
+
+        if( this.state.note.text.length <= 100 ) {
+            this.setState({
+                note: {
+                    id: this.state.note.id,
+                    editable: this.state.note.editable,
+                    text: text,
+                    posX: this.state.note.posX,
+                    posY: this.state.note.posy,
+                    width: '224px',
+                    title: this.state.note.title,
+                    likes: this.state.note.likes,
+                    zindex: this.state.note.zindex
+                }
+            })
+        } else if (
+            this.state.note.text.length >= 180 &&
+            this.state.note.text.length <= 250) {
+                this.setState({
+                    note: {
+                        id: this.state.note.id,
+                        editable: this.state.note.editable,
+                        text: text,
+                        posX: this.state.note.posX,
+                        posY: this.state.note.posy,
+                        width: '300px',
+                        title: this.state.note.title,
+                        likes: this.state.note.likes,
+                        zindex: this.state.note.zindex
+                    }
+                })
+        } else {
+            this.setState({
+                note: {
+                    id: this.state.note.id,
+                    editable: this.state.note.editable,
+                    text: text,
+                    posX: this.state.note.posX,
+                    posY: this.state.note.posy,
+                    width: '500px',
+                    title: this.state.note.title,
+                    likes: this.state.note.likes,
+                    zindex: this.state.note.zindex
+                }
+            })
+        }
     }
 
     updatePosition = (x, y, event) => {
@@ -50,14 +123,15 @@ export default class Sticker extends React.Component {
                 editable: this.state.note.editable,
                 text: this.state.note.text,
                 posX: x,
-                posY: y
+                posY: y,
+                width: this.state.note.width,
+                title: this.state.note.title,
+                likes: this.state.note.likes,
+                zindex: this.state.note.zindex
             }
         });
 
         if (event.target.parentElement.dataset.id == this.state.note.id) {
-            event.target.parentElement.zIndex = this.props.zindex + 1;
-            console.log("zindex", event.target.parentElement.zIndex);
-            console.log(event.target.parentElement.zIndex);
             const app = this.props.app;
             const note = app.database().ref(`notes/${this.state.note.id}`);
             note.update({"posX": x, "posY": y});
@@ -88,6 +162,7 @@ export default class Sticker extends React.Component {
             }
 
             draggedEl = this;
+            draggedEl.zIndex = self.props.zindex + 1;
             boundingClientRect = draggedEl.getBoundingClientRect();
 
             grabPointY = boundingClientRect.top - e.clientY;
@@ -117,7 +192,6 @@ export default class Sticker extends React.Component {
 
         onDragEnd = function(e) {
             self.updatePosition(positionX, positionY, e);
-            // console.log(draggedEl);
             draggedEl = null;
             grabPointX = null;
             grabPointY = null;
@@ -136,7 +210,9 @@ export default class Sticker extends React.Component {
 
         const style = {
             transform: `translateX(${this.props.note.posX}px) translateY(${this.props.note.posY}px)`,
-            zIndex: `${1 + this.props.iterator}`
+            zIndex: `${1 + this.props.iterator}`,
+            width: this.state.note.width,
+            height: this.state.note.height
         }
 
         const header = <div className='grab'></div>;
