@@ -7,6 +7,6 @@
 @import './partials/sticker';
 @import './partials/penny';
 
-// * {
-//     transition: all 0.5 ease;
-// }
+html {
+    overflow: hidden;
+}
