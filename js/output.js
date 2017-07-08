@@ -9796,8 +9796,8 @@ var App = function (_React$Component) {
     _createClass(App, [{
         key: 'render',
         value: function render() {
-            // let pennyStyle;
             var mobile = window.matchMedia("screen and (max-width: 640px)");
+
             var config = {
                 apiKey: "AIzaSyC5ckiCce9nQQfF2z5WL3QKeSkEMG0Q6vk",
                 databaseURL: "https://penny-fec88.firebaseio.com"
@@ -10233,6 +10233,7 @@ var Sticker = function (_React$Component) {
         };
 
         _this.updatePosition = function (x, y, event) {
+            // if (!this === null) {
             _this.setState({
                 note: {
                     id: _this.state.note.id,
@@ -10252,6 +10253,7 @@ var Sticker = function (_React$Component) {
                 var note = app.database().ref('notes/' + _this.state.note.id);
                 note.update({ "posX": x, "posY": y });
             }
+            // }
         };
 
         _this.state = {
@@ -10292,7 +10294,6 @@ var Sticker = function (_React$Component) {
             onDragStart = function onDragStart(e) {
                 var boundingClientRect = void 0;
                 if (e.target.className.indexOf('grab') === -1) {
-                    console.log('na falsie: ' + e);
                     return;
                 }
 
@@ -10301,10 +10302,7 @@ var Sticker = function (_React$Component) {
                 boundingClientRect = draggedEl.getBoundingClientRect();
 
                 grabPointY = boundingClientRect.top - e.clientY;
-                //  - e.clientY
                 grabPointX = boundingClientRect.left - e.clientX;
-                //  - e.clientX
-                console.log('on drag start: ', e);
             };
 
             onDrag = function onDrag(e) {
@@ -10329,7 +10327,6 @@ var Sticker = function (_React$Component) {
             };
 
             onDragEnd = function onDragEnd(e) {
-                console.log(e);
                 self.updatePosition(positionX, positionY, e);
                 draggedEl = null;
                 grabPointX = null;

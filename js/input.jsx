@@ -6,8 +6,8 @@ import Layout from './comps/Layout.jsx';
 class App extends React.Component {
 
     render() {
-        // let pennyStyle;
         const mobile = window.matchMedia("screen and (max-width: 640px)");
+
         const config = {
             apiKey: "AIzaSyC5ckiCce9nQQfF2z5WL3QKeSkEMG0Q6vk",
             databaseURL: "https://penny-fec88.firebaseio.com"

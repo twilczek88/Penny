@@ -117,25 +117,27 @@ export default class Sticker extends React.Component {
     }
 
     updatePosition = (x, y, event) => {
-        this.setState({
-            note: {
-                id: this.state.note.id,
-                editable: this.state.note.editable,
-                text: this.state.note.text,
-                posX: x,
-                posY: y,
-                width: this.state.note.width,
-                title: this.state.note.title,
-                likes: this.state.note.likes,
-                zindex: this.state.note.zindex
-            }
-        });
+        // if (!this === null) {
+            this.setState({
+                note: {
+                    id: this.state.note.id,
+                    editable: this.state.note.editable,
+                    text: this.state.note.text,
+                    posX: x,
+                    posY: y,
+                    width: this.state.note.width,
+                    title: this.state.note.title,
+                    likes: this.state.note.likes,
+                    zindex: this.state.note.zindex
+                }
+            });
 
-        if (event.target.parentElement.dataset.id == this.state.note.id) {
-            const app = this.props.app;
-            const note = app.database().ref(`notes/${this.state.note.id}`);
-            note.update({"posX": x, "posY": y});
-        }
+            if (event.target.parentElement.dataset.id == this.state.note.id) {
+                const app = this.props.app;
+                const note = app.database().ref(`notes/${this.state.note.id}`);
+                note.update({"posX": x, "posY": y});
+            }
+        // }
     }
 
     componentDidMount() {
@@ -158,7 +160,6 @@ export default class Sticker extends React.Component {
         onDragStart = function(e) {
             let boundingClientRect;
             if (e.target.className.indexOf('grab') === -1) {
-                console.log(`na falsie: ${e}`);
                 return;
             }
 
@@ -167,10 +168,7 @@ export default class Sticker extends React.Component {
             boundingClientRect = draggedEl.getBoundingClientRect();
 
             grabPointY = boundingClientRect.top - e.clientY;
-            //  - e.clientY
             grabPointX = boundingClientRect.left - e.clientX;
-            //  - e.clientX
-            console.log(`on drag start: `, e );
         };
 
         onDrag = function(e) {
@@ -195,7 +193,6 @@ export default class Sticker extends React.Component {
         };
 
         onDragEnd = function(e) {
-            console.log(e);
             self.updatePosition(positionX, positionY, e);
             draggedEl = null;
             grabPointX = null;
