@@ -69,6 +69,7 @@ export default class Sticker extends React.Component {
             }
         });
 
+        //determine a note size.
         if( this.state.note.text.length <= 100 ) {
             this.setState({
                 note: {
@@ -217,7 +218,7 @@ export default class Sticker extends React.Component {
             height: this.state.note.height
         }
 
-        const header = <div className='grab'></div>;
+        const header = <div className='grab'/>;
 
         const footer = <div></div>;
 

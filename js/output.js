@@ -9794,6 +9794,58 @@ var App = function (_React$Component) {
     }
 
     _createClass(App, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var posX = void 0,
+                posY = void 0,
+                dX = 0,
+                dY = 0,
+                dragging = false;
+
+            var onScreenDragStart = function onScreenDragStart(e) {
+                dragging = true;
+                posX = e.clientX;
+                posY = e.clientY;
+            };
+
+            var onScreenDrag = function onScreenDrag(e) {
+                if (dragging === true) {
+                    dX = posX - e.clientX;
+                    dY = posY - e.clientY;
+                    window.scrollBy(dX, dY);
+                    posX = e.clientX;
+                    posY = e.clientY;
+                }
+            };
+
+            var onScreenDragEnd = function onScreenDragEnd() {
+                dragging = false;
+                dX = 0;
+                dY = 0;
+            };
+
+            document.addEventListener('mousedown', function (e) {
+                if (e.which == 2) {
+                    e.preventDefault();
+                    onScreenDragStart(e);
+                }
+            });
+
+            document.addEventListener('mousemove', function (e) {
+                if (e.which == 2) {
+                    e.preventDefault();
+                    onScreenDrag(e);
+                }
+            });
+
+            document.addEventListener('mouseup', function (e) {
+                if (e.which == 2) {
+                    e.preventDefault();
+                    onScreenDragEnd();
+                }
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var mobile = window.matchMedia("screen and (max-width: 640px)");
@@ -10187,6 +10239,7 @@ var Sticker = function (_React$Component) {
                 }
             });
 
+            //determine a note size.
             if (_this.state.note.text.length <= 100) {
                 _this.setState({
                     note: {
