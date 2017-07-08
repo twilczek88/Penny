@@ -18,10 +18,11 @@ module.exports = {
                 }
             },
             {
-                //sudo npm install style-loader css-loader --save-dev
-                //sudo npm install node-sass sass-loader --save-dev
+                //npm install style-loader css-loader --save-dev
+                //npm install node-sass sass-loader --save-dev
+                //npm install autoprefixer-loader --save-dev
                 test: /\.scss$/,
-                loader: ['style-loader', 'css-loader', 'sass-loader']
+                loader: ['style-loader', 'css-loader', 'autoprefixer-loader', 'sass-loader' ]
 
             }
         ]
