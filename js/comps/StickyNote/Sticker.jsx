@@ -158,6 +158,7 @@ export default class Sticker extends React.Component {
         onDragStart = function(e) {
             let boundingClientRect;
             if (e.target.className.indexOf('grab') === -1) {
+                console.log(`na falsie: ${e}`);
                 return;
             }
 
@@ -166,7 +167,10 @@ export default class Sticker extends React.Component {
             boundingClientRect = draggedEl.getBoundingClientRect();
 
             grabPointY = boundingClientRect.top - e.clientY;
+            //  - e.clientY
             grabPointX = boundingClientRect.left - e.clientX;
+            //  - e.clientX
+            console.log(`on drag start: `, e );
         };
 
         onDrag = function(e) {
@@ -174,8 +178,8 @@ export default class Sticker extends React.Component {
                 return;
             }
 
-            let posX = e.clientX + grabPointX,
-                posY = e.clientY + grabPointY;
+            let posX = e.layerX + grabPointX,
+                posY = e.layerY + grabPointY;
 
             if (posX < 0) {
                 posX = 0;
@@ -191,6 +195,7 @@ export default class Sticker extends React.Component {
         };
 
         onDragEnd = function(e) {
+            console.log(e);
             self.updatePosition(positionX, positionY, e);
             draggedEl = null;
             grabPointX = null;
