@@ -29,10 +29,10 @@ module.exports = {
     }
 }
 
-//dev server
-//sudo npm install webpack-dev-server --save-dev
+//DEV SERVER:
+//npm install webpack-dev-server --save-dev
 
 //localinstall webpack
-//sudo npm install --save-dev webpack
+//npm install --save-dev webpack
 //launch
 //./node_modules/.bin/webpack-dev-server --inline --hot

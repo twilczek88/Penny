@@ -54,6 +54,21 @@ export default class Sticker extends React.Component {
         }
     }
 
+    handleLikeClick = () => {
+        console.log('clicked :3');
+        this.setState({
+            id: this.state.note.id,
+            editable: this.state.note.editable,
+            text: this.state.note.text,
+            posX: this.state.note.posX,
+            posY: this.state.note.posY,
+            width: this.state.note.width,
+            title: this.state.note.title,
+            likes: ++this.state.note.likes,
+            zindex: this.state.note.zindex
+        })
+    }
+
     parseText = ( text ) => {
         this.setState({
             note: {
@@ -220,21 +235,26 @@ export default class Sticker extends React.Component {
 
         const header = <div className='grab'/>;
 
-        const footer = <div></div>;
+        const footer = <div className= 'sticker-footer clearfix'>
+            {
+            // <span>{ this.state.note.likes }</span>
+            // <div className='button like' onClick = { this.handleLikeClick } >like!</div>
+            }
+        </div>;
 
         if (this.state.note.editable) {
             return <div className='sticker' style={style}>
                 {header}
                 <Text editable={this.state.note.editable} parseText={this.parseText}/>
-                <div className='button' onClick={this.handlePostClick}>
+                <div className='button post' onClick={this.handlePostClick}>
                     post!
                 </div>
-                {footer}
             </div>
         } else {
             return <div className='sticker' style={style} data-id={this.state.note.id}>
                 {header}
-                <Text editable={this.state.note.editable} text={this.state.note.text}/> {footer}
+                <Text editable={this.state.note.editable} text={this.state.note.text}/>
+                {footer}
             </div>
         }
     }

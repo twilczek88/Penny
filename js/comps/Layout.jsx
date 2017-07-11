@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header.jsx';
 // import Penny from './Penny.jsx';
 import Sticker from './StickyNote/Sticker.jsx';
+import Menu from './Menu.jsx';
 
 export default class Layout extends React.Component {
     constructor(props) {
