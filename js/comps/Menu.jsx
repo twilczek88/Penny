@@ -8,9 +8,9 @@ export default class Menu extends React.Component {
     render(){
         return <menu>
             <ul>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li>lorem ipsum</li>
+                <li>dolor</li>
+                <li>sit amet</li>
             </ul>
         </menu>
     }
